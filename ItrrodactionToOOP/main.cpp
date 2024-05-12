@@ -61,6 +61,12 @@ public:
 		y++;
 		return old;
 	}
+	Point& operator()(double x, double y)
+	{
+		set_x(x);
+		set_y(y);
+		return *this;
+	}
 	
 	//   Methods
 	double distance(const Point& other) const
@@ -103,9 +109,15 @@ std::ostream& operator<<(std::ostream& os, const Point& obj)
 	return os << "X = " << obj.get_x() << "\tY = " << obj.get_y();
 	
 }
-std::ostream& operator>>(std::ostream& os, const Point& obj)
+std::istream& operator>>(std::istream& is,  Point& obj)
 {
-
+	double x, y;
+	is >> x >> y;
+	//obj.set_x(x);
+	//obj.set_y(y);
+	obj(x, y);
+	return is;
+	//return os >> obj.set_x(x) >> obj.set_y(y);
 }
 
 //#define STRUCT_POINT
@@ -192,8 +204,8 @@ void main()
 #endif // OPERATORS_CHECK
 
 	Point A(2, 3);
-	cout << ""; cin >> A;
-	cout << A<< endl;
+	cout << "Введите значения "; cin >> A;
+	cout << A << endl;
 }
 /*
 -------------------------------------------------------
