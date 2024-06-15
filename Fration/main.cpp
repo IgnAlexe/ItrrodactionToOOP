@@ -38,12 +38,21 @@ public:
 		denominator = 1;
 		cout << "1ArgConstructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		numerator = 0;
 		denominator = 1;
 		cout << "1ArgConstructor:\t" << this << endl;
+	}
+	Fraction(double decimal)
+	{
+		decimal += 1e-10;
+		integer = decimal;
+		denominator = 1e+9;
+		decimal -= integer;
+		numerator = decimal * denominator;
+		reduce();
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -130,6 +139,16 @@ public:
 		Fraction old = *this;
 		integer--;
 		return old;
+	}
+
+	//		Type-cast operators:
+	explicit operator int()
+	{
+		return integer;
+	}
+	explicit operator double()
+	{
+		return integer + (double)numerator/denominator;
 	}
 
 	//		Methods:
@@ -299,6 +318,10 @@ std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 //#define CONSTRUCTORS_CHECK
 //#define ARITHMETICAL_OPERATOR_CHECK
 //#define COMPARISON_OPERATORS_CHECK
+// #define 
+//#define TYPE_CONVERSIONS_1
+//#define TYPE_CONVERSIONS_2
+#define HOME_WORK
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -347,8 +370,64 @@ void main()
 #ifdef COMPARISON_OPERATORS_CHECK
 	cout << (Fraction(1, 2) > Fraction(5, 11)) << endl; 
 #endif
+#ifdef STREAMS_CHECK
 	Fraction A(2, 3, 4);
 	cout << A << endl;
 	cout << "Введите простую дробь: "; cin >> A;
+	cout << A << endl; 
+#endif // STREAMS_CHECK
+#ifdef TYPE_CONVERSIONS_1
+	//(type)value;	//C-like notation (C-подобная форма записи)
+//type(value);	//Functional notation (Функциональная форма записи)
+
+	int a = 2;		//No conversions
+	double b = 3;	//Conversion from less to more
+	int c = b;		//Conversion from more to less without data loss
+	int d = 5.5;	//Conversion from more to less with data loss  
+#endif // TYPE_CONVERSIONS_1
+#ifdef TYPE_CONVERSIONS_2
+	//1) From other to class
+//2) From class to other
+
+/*
+1) From other to class
+	Single-Argument constructor
+	Copy assignment
+*/
+
+	Fraction A = (Fraction)5;		//Conversion from 'int' to 'Fraction'
 	cout << A << endl;
+
+
+	Fraction B;
+	B = Fraction(8, 11);
+	cout << B << endl;
+
+	/*
+	2) From class to other
+
+	type-cast operators
+
+	operator type()
+	{
+		.......;
+		conversion-code;
+		.......;
+		return value;
+	}
+	*/
+
+	int a = (int)A;
+	cout << a << endl;
+#endif // TYPE_CONVERSIONS_2
+
+#ifdef HOME_WORK
+	//Fraction A(2, 3, 4);
+	//double a = A;
+	//cout << A << " = " << a << endl;
+
+	Fraction B = 2.75;
+	cout << B << endl;
+#endif // HOME_WORK
+
 }
